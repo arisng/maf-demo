@@ -336,10 +336,10 @@ dotnet run
 - Selector logic: prioritizes slogans containing "Future"
 
 ### ✅ Output Handling
-- All agents use `await context.YieldOutputAsync()` for intermediate results
 - Terminal agents (Approver, Rejector) specified in `.WithOutputFrom()`
+- `WithOutputFrom()` automatically yields executor return values
 - WorkflowOutputEvent successfully captured in event stream
-- Console displays all yielded outputs
+- No manual `YieldOutputAsync()` needed in terminal executors (causes duplicates)
 
 ## Execution Flow
 
@@ -393,6 +393,48 @@ SuperStep 5: Conditional Route
 - **Result**: Clean single output per terminal executor
 - **Mechanism**: `WithOutputFrom()` automatically yields executor return values
 - **Best Practice**: Let `WithOutputFrom()` handle output yielding for terminal executors
+- **Official Guidance**: Per Microsoft docs, "By default, message handlers with a non-void return type will also be yielded" when using `WithOutputFrom()`
+
+### Official Best Practice from Microsoft Agent Framework Documentation
+
+**Key Finding**: `WithOutputFrom()` has built-in auto-yield behavior:
+
+> "Executors can use YieldOutputAsync(Object) to yield output values. **By default, message handlers with a non-void return type will also be yielded**, unless AutoYieldOutputHandlerResultObject is set to false."
+
+**Recommended Pattern for Terminal Executors**:
+
+```csharp
+// ✅ CORRECT: Return value only (WithOutputFrom auto-yields)
+class ApproverAgent : Executor<(string, string), string>
+{
+    public override async ValueTask<string> HandleAsync((string, string) input, IWorkflowContext context)
+    {
+        string result = $"APPROVED: '{input.Item1}' - Excellent choice!";
+        Console.WriteLine($"Approver: {result}");
+        return result; // WithOutputFrom() will yield this automatically
+    }
+}
+
+// ❌ INCORRECT: Manual yield + return (causes duplicate outputs)
+class ApproverAgent : Executor<(string, string), string>
+{
+    public override async ValueTask<string> HandleAsync((string, string) input, IWorkflowContext context)
+    {
+        string result = $"APPROVED: '{input.Item1}' - Excellent choice!";
+        await context.YieldOutputAsync(result); // ← Creates duplicate!
+        return result; // ← WithOutputFrom also yields this!
+    }
+}
+```
+
+**When to Use Manual `YieldOutputAsync()`**:
+
+1. **Intermediate progress reporting** in long-running executors
+2. **Multiple outputs** from a single executor execution
+3. **Non-terminal executors** that need to emit workflow outputs
+4. **Custom output events** different from the return value
+
+**Summary**: For terminal executors with `WithOutputFrom()`, simply return the value and let the framework handle yielding automatically.
 
 ### 5. Conditional Branch Execution
 - **Behavior**: Both Approver AND Rejector execute in the same SuperStep
@@ -499,7 +541,10 @@ Event: SuperStepCompletedEvent
 
 ### ✅ Implemented Successfully
 
-1. **Yield Handling**: Use `WithOutputFrom()` alone for terminal executors - remove manual `YieldOutputAsync()`
+1. **Yield Handling**: Use `WithOutputFrom()` alone for terminal executors - **do not add manual `YieldOutputAsync()`**
+   - Official Microsoft docs confirm: "By default, message handlers with a non-void return type will also be yielded"
+   - Manual `YieldOutputAsync()` + `WithOutputFrom()` = duplicate outputs
+   - Terminal executors should simply return values; framework handles yielding
 2. **Stateful Aggregation**: Custom stateful executors can handle fan-in patterns when `AddFanInEdge` doesn't auto-aggregate
 3. **Parallel Execution**: `AddFanOutEdge` successfully enables concurrent processing
 4. **Conditional Routing**: `AddSwitch` with predicate-based cases works reliably
