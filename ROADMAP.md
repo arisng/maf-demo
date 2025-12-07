@@ -66,13 +66,119 @@ Each demo builds incrementally on previous ones, adding new concepts and complex
 
 ---
 
-## 🚧 Demo 3: TBD - Advanced Patterns
+## 🗺️ Strategic Roadmap: The "Killing Features" Journey
 
-**Status**: PLANNING
+This comprehensive roadmap outlines the path to mastering the Microsoft Agent Framework, covering all critical capabilities from basic orchestration to enterprise-grade production systems.
 
-**Complexity Level**: Advanced
+### Phase 1: The Mechanics (✅ Completed)
+*Goal: Master the fundamental building blocks of workflows.*
 
-**Potential Options** (✅ = Strong Official Support, ⚠️ = Partial Support, ❓ = Limited Documentation):
+- **Demo 1: Sequential Workflow** (✅ Done)
+  - **Concept**: Linear chaining (`A -> B -> C`).
+  - **Feature**: `Executor<T>`, `AddEdge`.
+- **Demo 2: Parallel & Branching** (✅ Done)
+  - **Concept**: Doing things at once & making decisions.
+  - **Feature**: `AddFanOutEdge` (Parallelism), `AddSwitch` (Conditional Logic), Stateful Aggregation.
+- **Demo 3: Iterative Feedback Loops** (✅ Done)
+  - **Concept**: Self-correction and refinement.
+  - **Feature**: Cyclic Graphs, Loop Termination, Type Adaptation in cycles.
+
+### Phase 2: Reliability & Persistence (The "Enterprise Basics")
+*Goal: Build systems that survive failures and wait for humans.*
+
+- **Demo 4: Human-in-the-Loop & Persistence** (Next)
+  - **Concept**: The "Pause Button" and "Save Game" feature.
+  - **Features**:
+    - **Checkpointing**: Saving workflow state to disk/DB.
+    - **Resuming**: Restarting a workflow from where it left off.
+    - **Human Approval**: Pausing execution until a human signal is received.
+  - **Technical Feasibility**: ✅ **Supported**.
+    - APIs: `CheckpointManager`, `RequestPort<T>`, `InProcessExecution.StreamAsync(..., checkpointManager)`.
+  - **Why**: Essential for long-running business processes (e.g., Expense Approval).
+
+- **Demo 5: Error Handling & Resilience**
+  - **Concept**: "Graceful Failure".
+  - **Features**:
+    - **Retries**: Implementing retry logic within Executors.
+    - **Fallbacks**: Routing to a backup agent if the primary fails.
+  - **Technical Feasibility**: ⚠️ **Custom Implementation**.
+    - APIs: No built-in retry policy. Must use **Polly** or custom `try/catch` loops inside `HandleAsync`.
+  - **Why**: Production systems must handle API outages and transient errors.
+
+### Phase 3: Intelligence & Capabilities (The "Brain")
+*Goal: Injecting real AI and agency.*
+
+- **Demo 6: AI Integration & Tool Calling**
+  - **Concept**: "Real Agents" doing real work.
+  - **Features**:
+    - **ChatClientAgent**: Integrating Azure OpenAI / OpenAI models.
+    - **Tool Use**: Giving agents "hands" (Calculator, Web Search).
+  - **Technical Feasibility**: ✅ **Supported**.
+    - APIs: `ChatClientAgent`, `AIFunctionFactory`, `IChatClient`.
+  - **Why**: Moving from "Dummy" string processing to actual intelligence.
+
+- **Demo 7: Memory & Context Management**
+  - **Concept**: "Remembering the Past".
+  - **Features**:
+    - **Long-term Memory**: RAG (Retrieval Augmented Generation) integration.
+  - **Technical Feasibility**: 🔌 **External Integration**.
+    - APIs: Requires **Semantic Kernel** (`TextSearchProvider`, `Mem0Provider`) or custom vector DB integration. MAF provides the agent shell, SK provides the memory.
+  - **Why**: Complex tasks require context beyond the immediate prompt.
+
+### Phase 4: Advanced Patterns (The "Expert" Level)
+*Goal: Sophisticated multi-agent collaboration.*
+
+- **Demo 8: Dynamic Planning (ReAct)**
+  - **Concept**: "Don't follow the script, write it."
+  - **Features**:
+    - **Planner Agent**: An agent that generates the workflow steps at runtime.
+  - **Technical Feasibility**: ⚠️ **Custom Implementation**.
+    - APIs: No `Planner` class. Must implement **ReAct pattern** manually or use **Magentic** libraries.
+  - **Why**: Handling ambiguous or open-ended user requests.
+
+- **Demo 9: Multi-Agent Collaboration Patterns**
+  - **Concept**: "Two heads are better than one."
+  - **Features**:
+    - **Debate/Voting**: Multiple agents voting on the best output.
+  - **Technical Feasibility**: ✅ **Supported**.
+    - APIs: `BuildGroupChat()`, `BuildConcurrent()`, `BuildHandoff()`.
+  - **Why**: Improving accuracy and reducing hallucinations.
+
+### Phase 5: Production Readiness (The "Deployment")
+*Goal: Shipping it.*
+
+- **Demo 10: Hosting & API Exposure**
+  - **Concept**: "Agents as a Service".
+  - **Features**:
+    - **ASP.NET Core Integration**: Hosting workflows in a Web API.
+  - **Technical Feasibility**: ✅ **Supported**.
+    - APIs: Standard .NET DI, `InProcessExecution` is thread-safe.
+  - **Why**: Users interact via Apps/Web, not Console.
+
+- **Demo 11: Observability & Monitoring**
+  - **Concept**: "X-Ray Vision".
+  - **Features**:
+    - **OpenTelemetry**: Distributed tracing of agent interactions.
+  - **Technical Feasibility**: ✅ **Supported**.
+    - APIs: Native `ActivitySource` support in MAF.
+  - **Why**: You can't fix what you can't see.
+
+### Phase 6: Scale (The "Future")
+*Goal: Massive scale.*
+
+- **Demo 12: Distributed Agents**
+  - **Concept**: "Agents Everywhere".
+  - **Features**:
+    - **Orleans Integration**: Virtual Actors.
+  - **Technical Feasibility**: 🔌 **Extension Required**.
+    - APIs: Use `Microsoft.Agents.Orleans` extension (Azure Functions).
+  - **Why**: Handling millions of concurrent workflows.
+
+---
+
+## 📚 Research Notes & Potential Options
+
+(Preserved for reference)
 
 ### Option 1: Multi-Level Workflow with Feedback Loops ✅
 **Feasibility**: ✅ **STRONG OFFICIAL SUPPORT**
