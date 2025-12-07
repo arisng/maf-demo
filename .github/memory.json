@@ -1,0 +1,44 @@
+{"type":"entity","name":"Demo3","entityType":"Demo","observations":["Description: Demo implementing cyclic workflows"]}
+{"type":"entity","name":"Roadmap","entityType":"Plan","observations":["Description: Strategic roadmap for project"]}
+{"type":"entity","name":"CyclicWorkflowsPattern","entityType":"Pattern","observations":["Concept: Creating feedback loops where work is revised.","Implementation: Use standard AddEdge(source, target) where target eventually points back to source.","Constraint: The framework does not automatically detect infinite loops.","Best Practice: Implement a \"Loop Controller\" or iteration counter within one of the agents (e.g., ReviewerAgent) to force termination after N cycles."]}
+{"type":"entity","name":"TypeAdaptationPattern","entityType":"Pattern","observations":["Problem: In a loop A -> B -> A, if A expects input type X but B returns type Y, the cycle breaks.","Solution: Introduce an AdapterAgent (B -> Adapter -> A) to convert Y to X.","Example: Demo 3 used FeedbackAdapterAgent to convert (string, string) tuple from Reviewer back to string for Writer."]}
+{"type":"entity","name":"StatefulExecutorsPattern","entityType":"Pattern","observations":["Concept: Executors are instantiated once and reused.","Implementation: Use private fields (e.g., _revisionCount) to track state across multiple invocations in a workflow."]}
+{"type":"entity","name":"RoadmapPhase1","entityType":"Phase","observations":["Description: Mechanics (Sequential, Parallel, Cycles) - Completed"]}
+{"type":"entity","name":"RoadmapPhase2","entityType":"Phase","observations":["Description: Reliability (Persistence, HITL, Error Handling) - Next"]}
+{"type":"entity","name":"RoadmapPhase3","entityType":"Phase","observations":["Description: Intelligence (AI, Memory)"]}
+{"type":"entity","name":"RoadmapPhase4","entityType":"Phase","observations":["Description: Advanced (Planning, Collaboration)"]}
+{"type":"entity","name":"RoadmapPhase5","entityType":"Phase","observations":["Description: Production (Hosting, Observability)"]}
+{"type":"entity","name":"Persistence","entityType":"Concept","observations":["Mapped to CheckpointManager"]}
+{"type":"entity","name":"HumanInTheLoop","entityType":"Concept","observations":["Mapped to RequestPort"]}
+{"type":"entity","name":"AIIntegration","entityType":"Concept","observations":["Mapped to ChatClientAgent"]}
+{"type":"entity","name":"Distributed","entityType":"Concept","observations":["Mapped to MicrosoftAgentsOrleans"]}
+{"type":"entity","name":"CheckpointManager","entityType":"Component","observations":["Purpose: Handles persistence"]}
+{"type":"entity","name":"RequestPort","entityType":"Component","observations":["Purpose: Enables Human-in-the-Loop interactions"]}
+{"type":"entity","name":"ChatClientAgent","entityType":"Component","observations":["Purpose: Integrates AI capabilities"]}
+{"type":"entity","name":"MicrosoftAgentsOrleans","entityType":"Component","observations":["Purpose: Supports distributed execution"]}
+{"type":"entity","name":"FeedbackAdapterAgent","entityType":"Agent","observations":["Role: Converts (string, string) tuple to string in Demo3"]}
+{"type":"entity","name":"ReviewerAgent","entityType":"Agent","observations":["Role: Reviews work in Demo3, implements loop controller"]}
+{"type":"entity","name":"WriterAgent","entityType":"Agent","observations":["Role: Writes work in Demo3"]}
+{"type":"relation","from":"CyclicWorkflowsPattern","to":"Demo3","relationType":"discoveredIn"}
+{"type":"relation","from":"TypeAdaptationPattern","to":"Demo3","relationType":"discoveredIn"}
+{"type":"relation","from":"StatefulExecutorsPattern","to":"Demo3","relationType":"discoveredIn"}
+{"type":"relation","from":"RoadmapPhase1","to":"Roadmap","relationType":"partOf"}
+{"type":"relation","from":"RoadmapPhase2","to":"Roadmap","relationType":"partOf"}
+{"type":"relation","from":"RoadmapPhase3","to":"Roadmap","relationType":"partOf"}
+{"type":"relation","from":"RoadmapPhase4","to":"Roadmap","relationType":"partOf"}
+{"type":"relation","from":"RoadmapPhase5","to":"Roadmap","relationType":"partOf"}
+{"type":"relation","from":"Persistence","to":"CheckpointManager","relationType":"mapsTo"}
+{"type":"relation","from":"HumanInTheLoop","to":"RequestPort","relationType":"mapsTo"}
+{"type":"relation","from":"AIIntegration","to":"ChatClientAgent","relationType":"mapsTo"}
+{"type":"relation","from":"Distributed","to":"MicrosoftAgentsOrleans","relationType":"mapsTo"}
+{"type":"relation","from":"FeedbackAdapterAgent","to":"TypeAdaptationPattern","relationType":"usedIn"}
+{"type":"relation","from":"ReviewerAgent","to":"CyclicWorkflowsPattern","relationType":"usedIn"}
+{"type":"relation","from":"WriterAgent","to":"TypeAdaptationPattern","relationType":"usedIn"}
+{"type":"relation","from":"RoadmapPhase1","to":"RoadmapPhase2","relationType":"precedes"}
+{"type":"relation","from":"RoadmapPhase2","to":"RoadmapPhase3","relationType":"precedes"}
+{"type":"relation","from":"RoadmapPhase3","to":"RoadmapPhase4","relationType":"precedes"}
+{"type":"relation","from":"RoadmapPhase4","to":"RoadmapPhase5","relationType":"precedes"}
+{"type":"relation","from":"Persistence","to":"RoadmapPhase2","relationType":"belongsTo"}
+{"type":"relation","from":"HumanInTheLoop","to":"RoadmapPhase2","relationType":"belongsTo"}
+{"type":"relation","from":"AIIntegration","to":"RoadmapPhase3","relationType":"belongsTo"}
+{"type":"relation","from":"Distributed","to":"RoadmapPhase4","relationType":"belongsTo"}
