@@ -455,4 +455,60 @@ All demos reference official Microsoft Agent Framework documentation:
 
 ---
 
+## Roadmap Diagram
+
+```mermaid
+graph TD
+    subgraph Phase1["Phase 1: The Mechanics"]
+        D1["Demo 1: Sequential Workflow"]
+        D2["Demo 2: Parallel & Branching"]
+        D3["Demo 3: Iterative Feedback Loops"]
+    end
+    subgraph Phase2["Phase 2: Reliability & Persistence"]
+        D4["Demo 4: Human-in-the-Loop & Persistence"]
+        D5["Demo 5: Error Handling & Resilience"]
+    end
+    subgraph Phase3["Phase 3: Intelligence & Capabilities"]
+        D6["Demo 6: AI Integration & Tool Calling"]
+        D7["Demo 7: Memory & Context Management"]
+    end
+    subgraph Phase4["Phase 4: Advanced Patterns"]
+        D8["Demo 8: Dynamic Planning (ReAct)"]
+        D9["Demo 9: Multi-Agent Collaboration Patterns"]
+    end
+    subgraph Phase5["Phase 5: Production Readiness"]
+        D10["Demo 10: Hosting & API Exposure"]
+        D11["Demo 11: Observability & Monitoring"]
+    end
+    subgraph Phase6["Phase 6: Scale"]
+        D12["Demo 12: Distributed Agents"]
+    end
+    Phase1 --> Phase2 --> Phase3 --> Phase4 --> Phase5 --> Phase6
+    classDef phase1 fill:#FF6B6B,stroke:#333,stroke-width:2px
+    classDef phase1shade fill:#FF8E8E,stroke:#333
+    classDef phase2 fill:#4ECDC4,stroke:#333,stroke-width:2px
+    classDef phase2shade fill:#6ED7CE,stroke:#333
+    classDef phase3 fill:#45B7D1,stroke:#333,stroke-width:2px
+    classDef phase3shade fill:#67C9DB,stroke:#333
+    classDef phase4 fill:#FFA07A,stroke:#333,stroke-width:2px
+    classDef phase4shade fill:#FFB08C,stroke:#333
+    classDef phase5 fill:#98D8C8,stroke:#333,stroke-width:2px
+    classDef phase5shade fill:#AAD9D0,stroke:#333
+    classDef phase6 fill:#F7DC6F,stroke:#333,stroke-width:2px
+    class Phase1 phase1
+    class D1,D2,D3 phase1shade
+    class Phase2 phase2
+    class D4,D5 phase2shade
+    class Phase3 phase3
+    class D6,D7 phase3shade
+    class Phase4 phase4
+    class D8,D9 phase4shade
+    class Phase5 phase5
+    class D10,D11 phase5shade
+    class Phase6 phase6
+    class D12 phase6
+```
+
+---
+
 **Last Updated**: November 10, 2025
